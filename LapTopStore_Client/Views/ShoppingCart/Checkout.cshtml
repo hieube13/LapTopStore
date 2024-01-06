@@ -1,0 +1,303 @@
+﻿@using System.Globalization;
+@model List<LapTopStore_Client.Models.ShoppingCart.CartProduct> 
+@{
+
+    var length = Model.Count();
+    var totalpay = 0;
+
+    for (int i = 0; i < length; i++)
+    {
+        totalpay += Int32.Parse(Model[i].ProductPrice) * Model[i].Quantity;
+    }
+
+    var formatTotal = totalpay.ToString("C0", new CultureInfo("vi-VN"));
+}
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Product Related</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="coupon-accordion">
+                        <h3>Returning customer? <span id="showlogin">Click here to login</span></h3>
+                        <div id="checkout-login" class="coupon-content">
+                            <div class="coupon-info">
+                                <p class="coupon-text mb-1">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est
+                                    sit amet ipsum luctus.</p>
+                                <form action="javascript:void(0)">
+                                    <p class="form-row-first">
+                                        <label class="mb-1">Username or email <span class="required">*</span></label>
+                                        <input type="text">
+                                    </p>
+                                    <p class="form-row-last">
+                                        <label>Password <span class="required">*</span></label>
+                                        <input type="text">
+                                    </p>
+                                    <p class="form-row">
+                                        <input type="checkbox" id="remember_me">
+                                        <label for="remember_me">Remember me</label>
+                                    </p>
+                                    <p class="lost-password"><a href="javascript:void(0)">Lost your password?</a></p>
+                                </form>
+                            </div>
+                        </div>
+                        <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
+                        <div id="checkout_coupon" class="coupon-checkout-content">
+                            <div class="coupon-info">
+                                <form action="javascript:void(0)">
+                                    <p class="checkout-coupon">
+                                        <input placeholder="Coupon code" type="text">
+                                        <input class="coupon-inner_btn" value="Apply Coupon" type="submit">
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <form action="javascript:void(0)">
+                        <div class="checkbox-form">
+                            <h3>Billing Details</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div>
+                                        <div class="form-group">
+                                            <label for="city">Tỉnh thành</label>
+                                            <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                                                <option value="" selected>Chọn tỉnh thành</option>           
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="district">Quận huyện</label>
+                                            <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                                                <option value="" selected>Chọn quận huyện</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="ward">Phường xã</label>
+                                            <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                                                <option value="" selected>Chọn phường xã</option>
+                                            </select>
+                                        </div>
+                                     </div>    
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Tên người nhận hàng</label>
+                                        <input placeholder="" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Địa chỉ cụ thể<span class="required">*</span></label>
+                                        <input placeholder="số nhà , ngõ , đường .." type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label>Email Address <span class="required">*</span></label>
+                                        <input placeholder="" type="email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label>Phone <span class="required">*</span></label>
+                                        <input type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list create-acc">
+                                        <input id="cbox" type="checkbox">
+                                        <label for="cbox">Create an account?</label>
+                                    </div>
+                                    <div id="cbox-info" class="checkout-form-list create-account">
+                                        <p>Create an account by entering the information below. If you are a returning
+                                            customer please login at the top of the page.</p>
+                                        <label>Account password <span class="required">*</span></label>
+                                        <input placeholder="password" type="password">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="your-order">
+                        <h3>Your order</h3>
+                        <div class="your-order-table table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">Product</th>
+                                        <th class="cart-product-total">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr class="cart_item">
+                                        <td class="cart-product-name"> @item.ProductName<strong class="product-quantity">
+                                            × @item.Quantity</strong></td>
+                                        <td class="cart-product-total"><span class="amount">@String.Format("{0:0, 0 VNĐ}", Convert.ToInt32(@item.ProductPrice))</span></td>
+                                    </tr>
+                                    }               
+                                </tbody>
+                                <tfoot>
+                                    <tr class="cart-subtotal">
+                                        <th>Cart Subtotal</th>
+                                        <td><span class="amount">$215.00</span></td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <th>Order Total</th>
+                                        <td><strong><span class="amount">@formatTotal</span></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="payment-method">
+                            <div class="payment-accordion">
+                                <div>Phương thức thanh toán</div>
+                                <div id="payment-container">
+                                    <div class="payment-method" id="payment-1">
+                                        <h5 class="panel-title">
+                                            <a href="javascript:void(0)" class="payment-option" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                               Tiền mặt
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div class="payment-method" id="payment-2">
+                                        <h5 class="panel-title">
+                                            <a href="javascript:void(0)" class="payment-option collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
+                                                Thẻ ngân hàng
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div class="payment-method" id="payment-3">
+                                        <h5 class="panel-title">
+                                            <a href="javascript:void(0)" class="payment-option collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                                                MoMo
+                                            </a>
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="order-button-payment">
+                                    <input value="Place order" type="submit">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->
+
+<style>
+    #payment-container {
+            display: flex;
+            justify-content: space-around; /* Căn phương thức thanh toán theo chiều ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            background-color: #f0f0f0; /* Màu nền của container */
+            padding: 10px; /* Khoảng cách giữa các phương thức thanh toán */
+            border-radius: 10px; /* Bo tròn góc của container */
+    }
+
+    .payment-method {
+        text-align: center; /* Căn giữa nội dung theo chiều ngang */
+        background-color: #ffffff; /* Màu nền của ô hình chữ nhật */
+        padding: 15px; /* Kích thước của ô hình chữ nhật */
+        border: 1px solid #ccc; /* Viền ô hình chữ nhật */
+        border-radius: 8px; /* Bo tròn góc của ô hình chữ nhật */
+        margin: 0 5px; /* Khoảng cách giữa các ô hình chữ nhật */
+    }
+
+    .payment-option {
+        text-decoration: none; /* Loại bỏ gạch chân mặc định cho liên kết */
+        color: #333; /* Màu chữ của liên kết */
+    }
+
+    .payment-option.active {
+        font-weight: bold; /* Hiển thị đậm khi được chọn */
+        color: #007bff; /* Màu chữ khi được chọn */
+    }
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+      url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+      method: "GET", 
+      responseType: "application/json", 
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+      renderCity(result.data);
+    });
+
+    function renderCity(data) {
+      for (const x of data) {
+        citis.options[citis.options.length] = new Option(x.Name, x.Id);
+      }
+      citis.onchange = function () {
+        district.length = 1;
+        ward.length = 1;
+        if(this.value != ""){
+          const result = data.filter(n => n.Id === this.value);
+
+          for (const k of result[0].Districts) {
+            district.options[district.options.length] = new Option(k.Name, k.Id);
+          }
+        }
+      };
+      district.onchange = function () {
+        ward.length = 1;
+        const dataCity = data.filter((n) => n.Id === citis.value);
+        if (this.value != "") {
+          const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+          for (const w of dataWards) {
+            wards.options[wards.options.length] = new Option(w.Name, w.Id);
+          }
+        }
+      };
+    }
+
+    $(document).ready(function() {
+        $(".payment-option").click(function() {
+            $(".payment-option").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>

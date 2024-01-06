@@ -1,0 +1,339 @@
+﻿
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+    <!-- Phần bên trái -->
+        <div class="tk-ct-left">
+            <div class="card">
+                <div class="card-body">
+                    <div class="media">
+                        <img src="~/assets/images/others/taikhoan.png" alt="taikhoan" class="img-fluid mr-3">
+                        <div class="media-body header-tk-2021-ct">
+                            <span class="txt-tk-1">Tài khoản của</span>
+                            <br />
+                            <span id="tentaikhoan" class="txt-tk-2 font-weight-bold">Bùi Hiếu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-group">
+                <a href="?view=account-info" class="list-group-item list-group-item-action active" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-user" aria-hidden="true"></i>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a href="?view=account-order" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-list-alt" aria-hidden="true"></i>
+                    <span>Đơn hàng của tôi</span>
+                </a>
+                <a href="?view=address-list" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-heart" aria-hidden="true"></i>
+                    <span>Sổ địa chỉ</span>
+                </a>
+                <a href="?view=product-save" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-archive" aria-hidden="true"></i>
+                    <span>Sản phẩm mua sau</span>
+                </a>
+                <a href="/tin-khuyen-mai-su-kien" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="fas fa-fire" style="color: #f78d1c;"></i>
+                    <span>Tin khuyến mại</span>
+                </a>
+                <a href="/san-pham-da-xem" class="list-group-item list-group-item-action" target="_blank" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-eye" aria-hidden="true"></i>
+                    <span>Sản phẩm đã xem</span>
+                </a>
+                <a href="?view=product-review" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-star" aria-hidden="true"></i>
+                    <span>Đánh giá của tôi</span>
+                </a>
+                <a href="?view=product-comment" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-comment" aria-hidden="true"></i>
+                    <span>Bình luận của tôi</span>
+                </a>
+                <a href="?view=product-like" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-heart" aria-hidden="true"></i>
+                    <span>Sản phẩm đã thích</span>
+                </a>
+                <a href="?view=account-change-pass" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-lock" aria-hidden="true"></i>
+                    <span>Thay đổi mật khẩu</span>
+                </a>
+                <a href="/logout.php" class="list-group-item list-group-item-action" onclick="changeBackgroundColor(this)">
+                    <i class="far fa-power-off" aria-hidden="true"></i>
+                    <span>Đăng xuất tài khoản</span>
+                </a>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-md-8">
+    <!-- Phần bên phải -->
+    <div class="tk-ct-right">
+        <form method="post" enctype="multipart/form-data" name="account_form" onsubmit="customer_info_change()">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-success cus-info-note-2021" role="alert" style="display: none;">
+                        <i class="fas fa-times-circle"></i> Cập nhật thành công
+                    </div>
+                    <h5 class="card-title title-tk-2021">Thông tin tài khoản</h5>
+                    <div class="box-cus-info-2021-ct">
+                        <div class="form-group item-tk">
+                            <label for="fullname">Họ tên</label>
+                            <div class="item-tk-ct">
+                                <input type="text" name="fullname" id="txtfullname" value="" class="form-control">
+                                <div class="item-tk-ct-note"></div>
+                            </div>
+                        </div>
+                       <div class="form-group item-tk">
+                        <label for="avatar">Ảnh đại diện</label>
+                        <div class="item-tk-ct">
+                            <!-- Hiển thị ảnh nếu đã có -->
+                            <div id="avatar-container">
+                                <img src="" alt="Avatar" class="img-thumbnail" id="avatar-preview" style="max-width: 150px; max-height: 150px;">
+                                <!-- Nút xóa ảnh nếu đã có -->
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="delete-avatar" style="display: none;" onclick="deleteAvatar()">Xóa ảnh</button>
+                            </div>
+
+                            <!-- Input để chọn ảnh mới -->
+                            <input type="file" name="avatar" id="avatar" class="form-control-file" accept="image/*" onchange="changeDefaultImage(); previewAvatar(this);">
+
+                            <div class="item-tk-ct-note"></div>
+                        </div>
+                    </div>
+
+
+                        <div class="form-group item-tk">
+                            <label for="mobile">Số điện thoại</label>
+                            <div class="item-tk-ct">
+                                <input type="text" name="mobile" id="txtmobile" value="" class="form-control">
+                                <div class="item-tk-ct-note"></div>
+                            </div>
+                        </div>
+                        <div class="form-group item-tk">
+                            <label for="email">Email</label>
+                            <div class="item-tk-ct">
+                                <input type="text" name="email" id="txtemail" value="" class="form-control" >
+                                <div class="item-tk-ct-note"></div>
+                            </div>
+                        </div>
+                        <div class="form-group item-tk">
+                            <label>Giới tính</label>
+                            <div class="item-tk-ct label-select-radio">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" value="male" id="txtgender-male">
+                                    <label class="form-check-label" for="gender-male">Nam</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" value="female" id="txtgender-female">
+                                    <label class="form-check-label" for="gender-female">Nữ</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group item-tk">
+                            <label for="address">Địa chỉ</label>
+                            <div class="item-tk-ct">
+                                <input type="text" name="address" id="txtaddress" value="" class="form-control">
+                                <div class="item-tk-ct-note"></div>
+                            </div>
+                        </div>
+                        <div class="form-group item-tk">
+                            <div class="item-tk-ct">
+                                
+                                <button type="button" id="updateee" class="btn btn-primary">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>                   
+    </div>
+    </div>
+
+    </div>
+</div>
+
+<style>
+
+    .list-group-item {
+         background-color: #ffff;
+    }
+
+    .list-group-item.active {
+        background-color: #694a4a;
+    }
+
+</style>
+
+
+
+<script>
+    $(document).ready(function() {
+        var imageChange = 0;
+
+        $('#avatar').on('change', function () {
+            imageChange = 1;
+            if (typeof (FileReader) != "undefined") {
+                var preview = $("#avatar-preview");
+                var deleteButton = $("#delete-avatar");
+                var avatarContainer = $("#avatar-container");
+
+                // Kiểm tra nếu đã có ảnh, thì xóa nó trước khi thêm ảnh mới
+                avatarContainer.html("");
+
+                deleteButton.show(); // Hiển thị nút xóa ảnh
+
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                var index = 0;
+                var file = $(this)[0].files[0];
+
+                if (regex.test(file.name.toLowerCase())) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img class='img_" + index + "'/> <br/>");
+                        img.attr("style", "height:150px;width: 150px");
+                        img.attr("src", e.target.result);
+                        avatarContainer.append(img);
+
+                        // Gọi hàm để thay đổi ảnh mặc định
+                        changeDefaultImage();
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    alert(file.name + " is not a valid image file.");
+                    avatarContainer.html(""); // Xóa ảnh hiển thị
+                    deleteButton.hide(); // Ẩn nút xóa ảnh
+                    return false;
+                }
+            } else {
+                alert("This browser does not support HTML5 FileReader.");
+            }
+        });
+
+        function deleteAvatar() {
+            var avatarContainer = $("#avatar-container");
+            var deleteButton = $("#delete-avatar");
+
+            avatarContainer.html(""); // Xóa ảnh hiển thị
+            deleteButton.hide(); // Ẩn nút xóa ảnh
+            // Các xử lý khác nếu cần thiết
+        };
+
+
+
+        function UpdateInfor() {
+
+
+            var lstImageSrc = "";
+
+            // Lấy thẻ img trong thẻ div có id là avatar-container
+            var firstImage = $("#avatar-container img");
+
+            if (firstImage.length > 0) {
+                var imageBase64 = firstImage.attr("src");
+
+                // Kiểm tra xem giá trị của src có khác null hoặc rỗng không
+                if (imageBase64 != null && imageBase64 != "") {
+                    // Cắt bỏ đi data:image/jpeg;base64,
+                    imageBase64 = imageBase64.split(',')[1];
+                    lstImageSrc = imageBase64 + "_";
+                }
+            }
+
+            // Cắt bỏ ký tự "_" ở cuối cùng
+            if (lstImageSrc != null && lstImageSrc.length > 0) {
+                lstImageSrc = lstImageSrc.substring(0, lstImageSrc.length - 1);
+            }
+
+            // Lấy giá trị từ các trường nhập liệu
+            var fullname = $("#txtfullname").val();
+            var mobile = $("#txtmobile").val();
+            var gender = $("input[name='sex']:checked").val();
+            var address = $("#txtaddress").val();
+            var email = $("#txtemail").val();
+
+
+            // Tạo đối tượng JSON
+            var param = {
+                UserName: fullname,
+                Email: email,
+                Phone: mobile,
+                Sex: gender,
+                Address: address,
+                Base64Image: lstImageSrc,
+                Sign : "Hello",
+                ImageChange: imageChange
+            };
+
+            $.ajax({
+                type : 'POST',
+                url : "/User/UserDetailsChange",
+                data : param,
+                dataType : "json",
+                success : function(data) {
+                    if(data.responseCode < 0) {
+                        alert(data.messenger)
+                    }
+                    else {
+                        sessionStorage.setItem("UserName", data.userName);
+                        sessionStorage.setItem("Phone", data.phone);
+                        sessionStorage.setItem("Sex", data.sex);
+                        sessionStorage.setItem("Address", data.address);
+                        sessionStorage.setItem("Avatar", data.base64Image);
+                        window.location.href = "/User/UserDetails"
+                    }
+                },
+                error: function (data) {
+                    console.log("error:" + JSON.stringify(data));
+                }
+            });
+        }
+
+        $("#updateee").click(function () {
+            UpdateInfor();
+        });
+
+        var userNameFromSession = sessionStorage.getItem("UserName");
+        var phoneFromSession = sessionStorage.getItem("Phone");
+        var sexFromSession = sessionStorage.getItem("Sex");
+        var addressFromSession = sessionStorage.getItem("Address");
+        var avatarFromSession = sessionStorage.getItem("Avatar");
+        var emailFromSession = sessionStorage.getItem("Email");
+
+        $("#txtfullname").val(userNameFromSession);
+        $("#tentaikhoan").text(userNameFromSession);
+        $("#txtmobile").val(phoneFromSession);
+        $("#txtemail").val(emailFromSession);
+
+        var sexFromSessionTrimmed = sexFromSession.trim();
+        if (sexFromSessionTrimmed === "male") {
+            $("#txtgender-male").prop("checked", true);
+        } else if (sexFromSessionTrimmed === "female") {
+            $("#txtgender-female").prop("checked", true);
+        }
+
+        $("#txtaddress").val(addressFromSession);
+
+        if (avatarFromSession) {
+            $("#avatar-preview").attr("src", `https://localhost:7190/Product/${avatarFromSession}`);
+            $("#delete-avatar").show();
+            $("#choose-file-label").hide();
+        }
+
+        function changeBackgroundColor(element) {
+            var allLinks = document.querySelectorAll('.list-group-item');
+            allLinks.forEach(function(link) {
+                link.classList.remove('active');
+            });
+
+            element.classList.add('active');
+        }
+
+    });
+
+
+    
+</script>

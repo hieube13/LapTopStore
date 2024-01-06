@@ -1,0 +1,27 @@
+﻿@using LapTopStore_Admin.Data;
+@model List<ProductWithCategory>
+@*@model PagedList.Core.IPagedList<BuiMinhHieu.Models.Product>*@
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+                <tr>
+
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.ProductPrice.ToString("#, ###0") VND</td>
+                    <td>@item.ProductInStock<td>
+                    <td>@item.ProductInOrder</td>
+                    <td>
+                        <a class="btn btn-primary btn-tone m-r-5" asp-are="Admin" asp-controller="AdminProducts" asp-action="Details" asp-route-id="@item.ProductId">View</a>
+                        <a class="btn btn-secondary btn-tone m-r-5" asp-are="Admin" asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                        <a class="btn btn-success btn-tone m-r-5" asp-are="Admin" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+
+
+                </tr>
+    }
+}

@@ -1,0 +1,492 @@
+﻿@model LapTopStore_Admin.Data.ProductDetailResponse
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ProductId"/>
+@*<input type="hidden" asp-for="Thumb"/>*@
+    <input type="hidden" asp-for="ProductCreated"/>
+    <div class="page-header no-gutters has-tab">
+         <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="m-b-15">
+                <div>
+                    <button id="Save" type="button" class="btn btn-primary">
+                        <i class="anticon anticon-save"></i> Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <ul class="nav nav-tabs" >
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin cơ bản</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-option">Hình ảnh</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">Cấu hình máy</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic" >
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="productName" asp-for="ProductName" value="@Model.ProductName">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="ShortDesc">Mô tả sản phẩm</label>
+                        <input type="text" class="form-control" id="productDesc" asp-for="ProductDescription" value="@Model.ProductDescription">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productPrice">Giá bán</label>
+                            <input type="text" class="form-control" id="productPrice" asp-for="ProductPrice" value="@Model.ProductPrice">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productPrice">Giá giảm</label>
+                            <input type="text" class="form-control" id="productDiscount" asp-for="ProductDiscount" value="@Model.ProductDiscount">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
+                            <select class="custom-select" id="category" asp-for="CategoryId" style="min-width: 200px;" asp-items="ViewBag.Danhmuc">
+                                <option value="@Model.CategoryId" disabled selected>@Model.CategoryName</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productName">số lượng hàng tồn kho</label>
+                            <input type="text" class="form-control" asp-for="ProductInStock" value="@Model.ProductInStock">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="image1">Ảnh đại diện</label>
+                        <div id="image1-container">
+                        @if (!string.IsNullOrEmpty(Model.PrImage1))
+                        {
+                            <img src="https://localhost:7190/Product/@Model.PrImage1" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                            <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;">Xóa ảnh</button>
+                        }
+                        else
+                        {
+                            <img src="" alt="Default Image" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                            <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;">Xóa ảnh</button>
+                        }
+                        </div>
+                        <input name="fThumb" type="file" id="image1" class="form-control-file" asp-for="PrImage1">
+                    </div>
+
+                    <div class="row">
+                        <div class="m-t-25">
+                            <div class="form-group d-flex align-items-center">
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" id="homeFlag" name="HomeFlag" @(Model.HomeFlag ? "checked" : "")>
+                                    <label for="homeFlag"></label>
+                                </div>
+                                <label>HomeFlag</label>
+                            </div>
+                            <div class="form-group d-flex align-items-center">
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" id="bestSeller" name="BestSeller" @(Model.BestSeller ? "checked" : "")>
+                                    <label for="bestSeller"></label>
+                                </div>
+                                <label>BestSeller</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="image2">Ảnh 2 của máy</label>
+                        <div id="image2-container">
+                            @if (!string.IsNullOrEmpty(Model.PrImage1))
+                            {
+                                <img src="https://localhost:7190/Product/@Model.PrImage2" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                            else
+                            {
+                                <img src="" alt="Default Image" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                        </div>
+                        <input name="fThumb" type="file" id="image2" class="form-control-file" asp-for="PrImage2" multiple>
+                        <span asp-validation-for="PrImage2" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="image3">Ảnh 3 của máy</label>
+                        <div id="image3-container">
+                            @if (!string.IsNullOrEmpty(Model.PrImage1))
+                            {
+                                <img src="https://localhost:7190/Product/@Model.PrImage3" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                            else
+                            {
+                                <img src="" alt="Default Image" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                        </div>
+                        <input name="fThumb" type="file" id="image3" class="form-control-file" asp-for="PrImage3" multiple>
+                        <span asp-validation-for="PrImage3" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="image4">Ảnh 4 của máy</label>
+                        <div id="image4-container">
+                            @if (!string.IsNullOrEmpty(Model.PrImage1))
+                            {
+                                <img src="https://localhost:7190/Product/@Model.PrImage4" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                            else
+                            {
+                                <img src="" alt="Default Image" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="image1-delete" style="display: none;" onclick="deleteImage('#image1-container', '#image1-delete', 'imageChange1')">Xóa ảnh</button>
+                            }
+                        </div>
+                        <input name="fThumb" type="file" id="image4" class="form-control-file" asp-for="PrImage4" multiple>
+                        <span asp-validation-for="PrImage4" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="productCategory">Màu sắc</label>
+                <select class="custom-select" id="colorCategory" style="min-width: 200px;">
+                @{
+                    var defaultId = 0;
+                    foreach (var item in ViewBag.Color)
+                    {
+                        if (Model.Color == item.AttrValue)
+                        {
+                            defaultId = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultId" disabled selected>@Model.Color</option>
+                    @foreach (var color in ViewBag.Color)
+                    {
+                        <option value="@color.AttrId">@color.AttrValue</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="cpuCategory">CPU</label>
+                <select class="custom-select" id="cpuCategory" style="min-width: 200px;">
+                @{
+                    var defaultIdCPU = 0;
+                    foreach (var item in ViewBag.CPU)
+                    {
+                        if (Model.CPU == item.AttrValue)
+                        {
+                            defaultIdCPU = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultIdCPU" disabled selected>@Model.CPU</option>
+                @foreach (var cpu in ViewBag.CPU)
+                {
+                                <option value="@cpu.AttrId">@cpu.AttrValue</option>
+                }
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="ramCategory">RAM</label>
+                <select class="custom-select" id="ramCategory" style="min-width: 200px;">
+                @{
+                    var defaultIdRAM = 0;
+                    foreach (var item in ViewBag.RAM)
+                    {
+                        if (Model.RAM == item.AttrValue)
+                        {
+                            defaultIdRAM = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultIdRAM" disabled selected>@Model.RAM</option>
+                @foreach (var ram in ViewBag.RAM)
+                {
+                                <option value="@ram.AttrId">@ram.AttrValue</option>
+                }
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="hddCategory">Ổ cứng</label>
+                <select class="custom-select" id="hddCategory" style="min-width: 200px;">
+                @{
+                    var defaultIdDriver = 0;
+                    foreach (var item in ViewBag.Driver)
+                    {
+                        if (Model.Driver == item.AttrValue)
+                        {
+                            defaultIdDriver = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultIdDriver" disabled selected>@Model.Driver</option>
+                @foreach (var driver in ViewBag.Driver)
+                {
+                                <option value="@driver.AttrId">@driver.AttrValue</option>
+                }
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="screenCategory">Màn hình</label>
+                <select class="custom-select" id="screenCategory" style="min-width: 200px;">
+                @{
+                    var defaultIdScreen = 0;
+                    foreach (var item in ViewBag.Screen)
+                    {
+                        if (Model.Screen == item.AttrValue)
+                        {
+                            defaultIdScreen = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultIdScreen" disabled selected>@Model.Screen</option>
+                @foreach (var screen in ViewBag.Screen)
+                {
+                                <option value="@screen.AttrId">@screen.AttrValue</option>
+                }
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="osCategory">Hệ điều hành</label>
+                <select class="custom-select" id="osCategory" style="min-width: 200px;">
+                @{
+                    var defaultIdSystem = 0;
+                    foreach (var item in ViewBag.System)
+                    {
+                        if (Model.System == item.AttrValue)
+                        {
+                            defaultIdSystem = item.AttrId;
+                        }
+                    }
+                }
+                    <option value="@defaultIdSystem" disabled selected>@Model.System</option>
+                @foreach (var system in ViewBag.System)
+                {
+                                <option value="@system.AttrId">@system.AttrValue</option>
+                }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+   
+
+    $(document).ready(function () {
+
+        var imageChange1 = 0;
+        var imageChange2 = 0;
+        var imageChange3 = 0;
+        var imageChange4 = 0;
+
+        function handleImageChange(inputId, previewId, deleteButtonId, imageContainerId, imageChangeVar) {
+            $(inputId).on('change', function () {
+                var preview = $(previewId);
+                var deleteButton = $(deleteButtonId);
+                var imageContainer = $(imageContainerId);
+
+                // Clear existing images
+                imageContainer.html("");
+
+                deleteButton.show(); // Show delete button
+
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                var index = 0;
+                var file = $(this)[0].files[0];
+
+                if (regex.test(file.name.toLowerCase())) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img class='img_" + index + "'/> <br/>");
+                        img.attr("style", "height:150px;width: 150px");
+                        img.attr("src", e.target.result);
+                        imageContainer.append(img);
+
+                        // Call function to change default image
+                        changeDefaultImage(preview, deleteButton, imageChangeVar);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert(file.name + " is not a valid image file.");
+                    imageContainer.html(""); // Clear displayed image
+                    deleteButton.hide(); // Hide delete button
+                    return false;
+                }
+            });
+        }
+
+       function changeDefaultImage(preview, deleteButton, imageChangeVar) {
+            var defaultImageSrc = preview.attr("src");
+            var imageSrc = preview.attr("src");
+
+            if (defaultImageSrc && imageSrc === defaultImageSrc) {
+                imageChangeVar = 0; // Update variable value
+                deleteButton.hide(); // Hide delete button
+            } else {
+                imageChangeVar = 1; // Update variable value
+            }
+        }
+
+
+         // Handle image changes for image 1
+        handleImageChange('#image1', '#image1-preview', '#image1-delete', '#image1-container', imageChange1);
+
+        handleImageChange('#image2', '#image2-preview', '#image2-delete', '#image2-container', imageChange2);
+
+        handleImageChange('#image3', '#image3-preview', '#image3-delete', '#image3-container', imageChange3);
+
+        handleImageChange('#image4', '#image4-preview', '#image4-delete', '#image4-container', imageChange4);
+
+        console.log(imageChange1);
+
+        function getImageData(imageContainerId) {
+            var lstImageSrc = "";
+
+            // Lấy thẻ img trong thẻ div có id tương ứng
+            var imageContainer = $(imageContainerId);
+            var firstImage = imageContainer.find("img");
+
+            if (firstImage.length > 0) {
+                var imageBase64 = firstImage.attr("src");
+
+                // Kiểm tra xem giá trị của src có khác null hoặc rỗng không
+                if (imageBase64 != null && imageBase64 != "") {
+                    // Cắt bỏ đi data:image/jpeg;base64,
+                    imageBase64 = imageBase64.split(',')[1];
+                    lstImageSrc = imageBase64 + "_";
+                }
+            }
+
+            // Cắt bỏ ký tự "_" ở cuối cùng
+            if (lstImageSrc != null && lstImageSrc.length > 0) {
+                lstImageSrc = lstImageSrc.substring(0, lstImageSrc.length - 1);
+            }
+
+            return lstImageSrc;
+        }
+
+
+        function updateInformation() {
+
+            // Lấy dữ liệu của ảnh đại diện
+            var lstImageSrc1 = getImageData("#image1-container");
+
+            // Lấy dữ liệu của ảnh 2
+            var lstImageSrc2 = getImageData("#image2-container");
+
+            // Lấy dữ liệu của ảnh 3
+            var lstImageSrc3 = getImageData("#image3-container");
+
+            // Lấy dữ liệu của ảnh 4
+            var lstImageSrc4 = getImageData("#image4-container");
+
+
+            var productName = $("#productName").val();
+            var productDesc = $("#productDesc").val();
+            var productPrice = $("#productPrice").val();
+            var productDiscount = $("#productDiscount").val();
+            var categoryId = $("#category").val();
+            var productInStock = $("#ProductInStock").val();
+
+            // Kiểm tra checkbox checked hoặc không
+            var homeFlag = $("#homeFlag").is(":checked");
+            var bestSeller = $("#bestSeller").is(":checked");
+
+
+            // Lấy giá trị từ các trường file input (Ảnh đại diện, Ảnh 2, Ảnh 3, Ảnh 4)
+            var prImage1 = lstImageSrc1;
+            var prImage2 = lstImageSrc2;
+            var prImage3 = lstImageSrc3;
+            var prImage4 = lstImageSrc4;
+
+            // Lấy giá trị từ các trường select
+            var colorCategory = $("#colorCategory option:selected").val();
+            var cpuCategory = $("#cpuCategory option:selected").val();
+            var ramCategory = $("#ramCategory option:selected").val();
+            var hddCategory = $("#hddCategory option:selected").val();
+            var screenCategory = $("#screenCategory option:selected").val();
+            var osCategory = $("#osCategory option:selected").val();
+
+            var param1 = {
+                // Dữ liệu cần gửi đi
+                ProductName : productName,
+                ProductDescription : productDesc,
+                ProductPrice : productPrice,
+                ProductDiscount : productDiscount,
+                CategoryId : categoryId,
+                ProductInStock : productInStock,
+                HomeFlag : homeFlag,
+                BestSeller : bestSeller,
+                PrImage1 : prImage1,
+                PrImage2 : prImage2,
+                PrImage3 : prImage3,
+                PrImage4 : prImage4,
+                Sign : "",
+                ColorCategory : colorCategory,
+                CpuCategory :cpuCategory,
+                RamCategory : ramCategory,
+                HddCategory :hddCategory,
+                ScreenCategory :screenCategory,
+                OsCategory :osCategory,
+                ProductId : @Model.ProductId
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: "/Products/EditProduct",
+                data: param1,
+                dataType: "json",
+                success: function (data) {
+                    if(data.responseCode < 0){
+                        alert(data.messenger)
+                    }
+                    else
+                    {
+                        alert(data.messenger),
+                        window.location.href = "/Products/Index"
+                    }
+                },
+                error: function (data) {
+                    console.log("error:" + JSON.stringify(data));
+                }
+            });
+
+        }
+
+        // Gọi hàm cập nhật thông tin khi click vào nút Save
+        $('#Save').on('click', function () {
+            updateInformation();
+        });
+    });
+</script>

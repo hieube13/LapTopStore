@@ -1,0 +1,206 @@
+﻿@using System.Globalization;
+@model List<LapTopStore_Client.Models.ShoppingCart.CartProduct> 
+@{
+    
+    var length = Model.Count();
+    var totalpay = 0;
+
+    for (int i = 0; i < length; i++)
+    {
+        totalpay += Int32.Parse(Model[i].ProductPrice) * Model[i].Quantity;
+    }
+
+    var formatTotal = totalpay.ToString("C0", new CultureInfo("vi-VN"));
+}
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Product Related</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Cart</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="javascript:void(0)">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product_remove">remove</th>
+                                        <th class="product-thumbnail">images</th>
+                                        <th class="cart-product-name">Product</th>
+                                        <th class="product-price">Unit Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(Model == null )
+                                    {
+                                        <h2>Chua cos san pham nao</h2>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="product_remove">
+                                                <a href="javascript:void(0)">
+                                                    <i class="pe-7s-close" title="Remove"></i>
+                                                </a>
+                                            </td>
+                                            <td class="product-thumbnail">
+                                                <a href="javascript:void(0)">
+                                                    <img src="https://localhost:7190/Product/@item.PrImage1" alt="Cart Thumbnail" style="max-width: 200px; max-height: 200px;">
+                                                </a>
+                                            </td>
+                                            <td class="product-name"><a href="javascript:void(0)">@item.ProductName</a></td>
+                                            <td class="product-price"><span class="amount">@String.Format("{0:0, 0 VNĐ}", Convert.ToInt32(@item.ProductPrice))</span></td>
+                                            <td class="quantity">
+                                                <div class="" >
+                                                    <button class="cart-button cart-minus-button"
+                                                        class="cart-button cart-plus-button"
+                                                        data-productid="@item.ProductId"
+                                                        data-productname="@item.ProductName"
+                                                        data-productdescription="@item.ProductDescription"
+                                                        data-productprice="@item.ProductPrice"
+                                                        data-productcreated="@item.ProductCreated"
+                                                        data-productinstock="@item.ProductInStock"
+                                                        data-homeflag="@item.HomeFlag"
+                                                        data-bestseller="@item.BestSeller"
+                                                        data-primage1="@item.PrImage1"
+                                                        data-categoryname="@item.CategoryName"
+                                                        onclick="RemoveOneItemFromCart(this)"
+                                                    >
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input class="cart-quantity" value="@item.Quantity" type="text" style="text-align: center; width: 40px" />
+                                                    <button 
+                                                        class="cart-button cart-plus-button"
+                                                        data-productid="@item.ProductId"
+                                                        data-productname="@item.ProductName"
+                                                        data-productdescription="@item.ProductDescription"
+                                                        data-productprice="@item.ProductPrice"
+                                                        data-productcreated="@item.ProductCreated"
+                                                        data-productinstock="@item.ProductInStock"
+                                                        data-homeflag="@item.HomeFlag"
+                                                        data-bestseller="@item.BestSeller"
+                                                        data-primage1="@item.PrImage1"
+                                                        data-categoryname="@item.CategoryName"
+                                                        onclick="AddItemToCart(this)"
+                                                    >
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal"><span class=" amount cart-total">@String.Format("{0:0, 0 VNĐ}", Convert.ToInt32(@item.ProductPrice) * item.Quantity)</span></td>
+                                        </tr>
+                                    }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="coupon-all">
+                                    <div class="coupon">
+                                        <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
+                                        <input class="button mt-xxs-30" name="apply_coupon" value="Apply coupon" type="submit">
+                                    </div>
+                                    <div class="coupon2">
+                                        <input class="button" name="update_cart" value="Update cart" type="submit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 ml-auto">
+                                <div class="cart-page-total">
+                                    <h2>Cart totals</h2>
+                                    <ul>
+                                        <li>Subtotal <span>$118.60</span></li>
+                                        <li >
+                                            Total
+                                            <span id="totalpay">@formatTotal</span>
+                                        </li>
+                                    </ul>
+                                    <a asp-controller="ShoppingCart" asp-action="Checkout">Proceed to checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $(".cart-button").on("click", function () {
+            debugger;
+            var productId = parseInt($(this).data('productid'));
+
+            var store = GetCookie('MyShoppingCart');
+
+            var index = store.findIndex(function (d) {
+                return d.ProductId === productId;
+            });
+
+
+            var quantityValue = $(this).closest('tr').find('.cart-quantity').val();
+
+            // Nếu giá trị là 0, xoá sản phẩm khỏi màn hình và cookie
+            if (parseInt(quantityValue) === 0) {
+                $(this).closest('tr').remove(); // Xoá hàng từ màn hình
+                //store.splice(index, 1); 
+            } else {
+                // Cập nhật giá trị của cart-quantity
+                $(this).closest('tr').find('.cart-quantity').val(store[index].Quantity);
+
+                // Định dạng số thành dạng tiền tệ
+                var totalFormatted = (parseInt(store[index].Quantity) * parseInt(store[index].ProductPrice)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+                // Cập nhật giá trị cho cart-total
+                $(this).closest('tr').find('.cart-total').text(totalFormatted);
+            }
+
+            var subtotal = calculateSubtotal(store);
+            var totalFormatted = subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+            $("#totalpay").text(totalFormatted);
+
+        });
+
+        function calculateSubtotal(cartItems) {
+            // Tính tổng giá trị của giỏ hàng
+
+            var subtotal = 0;
+            for (var i = 0; i < cartItems.length; i++) {
+                subtotal += parseInt(cartItems[i].ProductPrice) * parseInt(cartItems[i].Quantity);
+            }
+            return subtotal;
+        }
+    });
+
+</script>

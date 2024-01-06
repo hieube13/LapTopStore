@@ -1,0 +1,119 @@
+﻿
+@model RegisterRequestData
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="~/assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Product Related</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Login | Register</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-register-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                    <div class="login-form">
+                        <h4 class="login-title">Login</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Email Address*</label>
+                                <input type="email" id="txtEmail" placeholder="Email Address">
+                            </div>
+                            <div class="col-lg-12">
+                                <label>Password</label>
+                                <input type="password" id="txtPassword" placeholder="Password">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="check-box">
+                                    <input type="checkbox" id="remember_me">
+                                    <label for="remember_me">Remember me</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 pt-1 mt-md-0">
+                                <div class="forgotton-password_info">
+                                    <a href="#"> Forgotten pasward?</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 pt-5">
+                                <button id="Login" class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0">Login</button>
+                                <button class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0" asp-controller="Customer" asp-action="Register">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+        
+    });
+
+
+    function Login() {
+        var param = {
+            Email : $("#txtEmail").val(),
+            Password : $("#txtPassword").val()
+        }
+
+        $.ajax({
+            type : 'POST',
+            url : "/Customer/Login",
+            data : param,
+            dataType : "json",
+            success : function(data) {
+                if(data.responseCode < 0) {
+                    alert(data.messenger)
+                }
+                else {
+                    //sessionStorage.setItem("UserName", data.userName);
+                    //sessionStorage.setItem("Email", data.email);
+                    //sessionStorage.setItem("FullName", data.fullName);
+                    //sessionStorage.setItem("Phone", data.phone);
+                    //sessionStorage.setItem("Address", data.address);
+                    //window.location.href = "/Home/Index";
+                    alert(data.messenger + " " + data.accesstoken);
+                    setCookie("LapTopJwtToken", data.accesstoken, 1);
+                    setCookie("LapTopRefreshToken", data.refreshToken, 1);
+                    window.location.href = "/Home/Index"
+                }
+            },
+            error: function (data) {
+                console.log("error:" + JSON.stringify(data));
+            }
+        });
+    }
+
+    $("#Login").click(function () {
+            Login();
+    });
+
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+
+</script>

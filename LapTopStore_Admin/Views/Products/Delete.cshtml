@@ -1,0 +1,38 @@
+﻿@model LapTopStore_Admin.Data.ProductWithCategory
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <div>
+        <input type="hidden" asp-for="ProductId" id="productId" />
+        <input type="button" value="Delete" class="btn btn-danger" onclick="deleteProduct()" /> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function deleteProduct() {
+        var productId = $("#productId").val();
+
+        $.ajax({
+            url: '/Products/DeleteProduct/' + productId,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                // Xử lý dữ liệu JSON ở đây
+                alert(data);
+                window.location.href = "/Products/Index"
+            },
+            error: function () {
+                alert('Error occurred while deleting the product.');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,198 @@
+﻿@model PagedList.Core.IPagedList<ProductWithCategory>
+@using LapTopStore_Admin.Data;
+@using PagedList.Core.Mvc
+
+@{
+    var currentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Quản lí sản phẩm" + currentPage;
+}
+
+<!-- Content Wrapper START -->
+<div class="main-content">
+    <div class="page-header">
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                <a class="breadcrumb-item asp-area="Admin" asp-controller="Products" asp-action="Index">Danh sách sản phẩm</a>
+                @*<a asp-area="Admin" asp-controller="Products" asp-action="Index" class="breadcrumb-item" href="#">Danh sách tài khoản</a>*@
+                <span class="breadcrumb-item active">Quản lí sản phẩm : page @currentPage</span>
+            </nav>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-affix m-v-10">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-md-flex">
+
+                                <div class="input-affix m-v-10">
+                                    <select class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;" asp-items="ViewBag.Danhmuc">
+                                        <option selected>Chọn danh mục</option>
+                                        <option value="0">Chọn tất cả</option> 
+                                    </select>
+                                </div>
+                            </div>                                  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-right">
+                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="Create">
+                        <i class="anticon anticon-plus-circle m-r-5"><span>Add Product</span></i>
+                    </a>
+                </div>
+
+
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover e-commerce-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá</th>
+                            <th>Tổn kho</th>
+                            <th>Đang giao</th>
+                            <th>HomeFlag</th>
+                            <th>BestSeller</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchProducts">
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.ProductId</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.CategoryName</td>
+                                    <td>@item.ProductPrice.ToString("#, ###0") VND</td>
+                                    <td>@item.ProductInStock</td>
+                                    <td>@item.ProductInOrder</td>
+                                    <td>
+                                        @if(item.HomeFlag == true)
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <span class="icon-holder">
+                                                    <i class="anticon anticon-check-circle" style="color: green; font-size: 2em;"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <span class="icon-holder">
+                                                    <i class="anticon anticon-close-circle" style="color: red; font-size: 2em;"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.BestSeller == true)
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <span class="icon-holder">
+                                                    <i class="anticon anticon-check-circle" style="color: green; font-size: 2em;"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <span class="icon-holder">
+                                                    <i class="anticon anticon-close-circle" style="color: red; font-size: 2em;"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-tone m-r-5" asp-are="Admin" asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">View</a>
+                                        <a class="btn btn-secondary btn-tone m-r-5" asp-are="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                                        <a class="btn btn-success btn-tone m-r-5" asp-are="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                                    </td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <div aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <pager class="pager-container" list="@Model" asp-controller="Products" asp-action="Index" asp-route-CatID="@ViewBag.CurrentCatID"></pager>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+@section Scripts{
+<script>
+    $(document).ready(function(){
+        jQuery("#txtCatID").change(function(){
+            var catID = jQuery(this).children(":selected").attr("value");
+            catID = parseFloat(catID);
+            $('#txtCatID option').removeAttr('selected');
+            $("txtCatID > [value=" + catID + "]").attr("selected", "true");
+
+            $.ajax({
+                url: '/Products/Filtter',
+                datatype: "json",
+                type: "GET",
+                data: {
+                    CatID: catID
+                },
+                async: true,
+                success: function(results){
+                    if(results.status == "success"){
+                        window.location.href = results.redirectUrl;
+                    }
+                },
+                error: function(xhr){
+                    alert('error');
+                }
+            });
+        });
+
+        $("#keyword").keyup(function(){
+            var strkeyword = $('#keyword').val(); 
+            var catID = $('#txtCatID').val();
+            $.ajax({
+                url: '/Search/FindProduct',
+                datatype: "html",
+                type: "POST",
+                data: {
+                    keyword: strkeyword,
+                    catID : catID
+                },
+                async: true,
+                success: function(results){
+                    $("#searchProducts").html("");
+                    $("#searchProducts").html(results);
+                },
+                error: function(xhr){
+                    alert('error');
+                }
+            });
+        });
+    })
+</script>
+}

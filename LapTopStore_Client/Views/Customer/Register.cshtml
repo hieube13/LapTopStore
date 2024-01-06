@@ -1,0 +1,126 @@
+﻿
+@model RegisterRequestData
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" >
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Product Related</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Login | Register</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-register-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 pt-10 pt-lg-0">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="login-form">
+                            <h4 class="login-title">Register</h4>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <label asp-for="CustomerUserName">User Name</label>
+                                    <input type="text" id="txtuserName" placeholder="Username">
+                                    <span asp-validation-for="CustomerUserName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label asp-for="CustomerFullName">Full Name</label>
+                                    <input type="text" id="txtfullName" placeholder="FullName">
+                                    <span asp-validation-for="CustomerFullName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="CustomerPhone">Your Phone</label>
+                                    <input type="text" id="txtphone" placeholder="Your Phone">
+                                    <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="CustomerAddress">Your Address</label>
+                                    <input type="text" id="txtaddress" placeholder="Your Address">
+                                    <span asp-validation-for="CustomerAddress" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="CustomerEmail">Email Address*</label>
+                                    <input type="email" id="txtemail" placeholder="Your Email">
+                                    <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="CustomerPassword">Password</label>
+                                    <input type="password" id="txtpassword" placeholder="Password">
+                                    <span asp-validation-for="CustomerPassword" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                                    <input type="password" id="txtconfirmPassword" placeholder="Confirm Password">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" id="Register" class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0">Register</button>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+          $("#Register").click(function () {
+            Register();
+        });
+    });
+
+
+    function Register() {
+        var param = {
+            CustomerUserName : $("#txtuserName").val(),
+            CustomerFullName : $("#txtfullName").val(),
+            CustomerPhone : $("#txtphone").val(),
+            CustomerEmail : $("#txtemail").val(),
+            CustomerAddress : $("#txtaddress").val(),
+            CustomerPassword : $("#txtpassword").val(),
+            ConfirmPassword : $("#txtconfirmPassword").val()
+        }
+
+        $.ajax({
+            type : 'POST',
+            url : "/Customer/Register",
+            data : param,
+            dataType : "json",
+            success : function(data) {
+                if(data.responseCode < 0) {
+                    alert(data.messenger)
+                }
+                else {
+                    sessionStorage.setItem("UserName", data.userName);
+                    sessionStorage.setItem("Email", data.email);
+                    sessionStorage.setItem("FullName", data.fullName);
+                    sessionStorage.setItem("Phone", data.phone);
+                    sessionStorage.setItem("Address", data.address);
+                    window.location.href = "/Home/Index";
+                }
+            },
+            error: function (data) {
+                console.log("error:" + JSON.stringify(data));
+            }
+        });
+    }
+
+
+</script>

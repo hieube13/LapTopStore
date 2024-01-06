@@ -1,0 +1,116 @@
+﻿@model LapTopStore_Admin.Data.ProductDetailResponse
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="ProductId" />
+<input type="hidden" asp-for="ProductCreated" />
+<div class="page-header no-gutters has-tab">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin cơ bản</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Hình ảnh</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-description">Cấu hình máy</a>
+        </li>
+    </ul>
+</div>
+<div class="tab-content m-t-15">
+    <div class="tab-pane fade show active" id="product-edit-basic">
+        <!-- Thêm phần hiển thị thông tin cơ bản của sản phẩm -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="productName" asp-for="ProductName" value="@Model.ProductName" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Mô tả sản phẩm</label>
+                    <input type="text" class="form-control" id="productDescription" asp-for="ProductDescription" value="@Model.ProductDescription" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Giá sản phẩm</label>
+                    <input type="text" class="form-control" id="productPrice" asp-for="ProductPrice" value="@Model.ProductPrice" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Giảm giá sản phẩm</label>
+                    <input type="text" class="form-control" id="productDiscount" asp-for="ProductDiscount" value="@Model.ProductDiscount" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Danh mục</label>
+                    <input type="text" class="form-control" id="productDiscount" asp-for="ProductDiscount" value="@Model.CategoryName" readonly>
+                </div>
+                <!-- Thêm các trường thông tin cơ bản khác tương tự -->
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="product-edit-option">
+        <!-- Thêm phần hiển thị hình ảnh của sản phẩm -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="image1">Ảnh đại diện</label>
+                    <div id="image1-container">
+                        <img src="https://localhost:7190/Product/@Model.PrImage1" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                    </div>
+                    <span asp-validation-for="PrImage1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="image1">Ảnh số 2</label>
+                    <div id="image1-container">
+                        <img src="https://localhost:7190/Product/@Model.PrImage2" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                    </div>
+                    <span asp-validation-for="PrImage1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="image1">Ảnh số 3</label>
+                    <div id="image1-container">
+                        <img src="https://localhost:7190/Product/@Model.PrImage3" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                    </div>
+                    <span asp-validation-for="PrImage1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold" for="image1">Ảnh số 4</label>
+                    <div id="image1-container">
+                        <img src="https://localhost:7190/Product/@Model.PrImage4" alt="Image 1" class="img-thumbnail" id="image1-preview" style="max-width: 150px; max-height: 150px;">
+                    </div>
+                    <span asp-validation-for="PrImage1" class="text-danger"></span>
+                </div>
+                <!-- Thêm các trường hình ảnh khác tương tự -->
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="product-edit-description">
+        <!-- Thêm phần hiển thị cấu hình máy của sản phẩm -->
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">Màu sắc</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.Color" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">RAM</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.RAM" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">CPU</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.CPU" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">Màn hình</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.Screen" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">Hệ điều hành</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.System" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="colorCategory">Ổ cứng</label>
+            <input type="text" class="form-control" id="colorCategory" value="@Model.Driver" readonly>
+        </div>
+        <!-- Thêm các trường cấu hình máy khác tương tự -->
+    </div>
+</div>
