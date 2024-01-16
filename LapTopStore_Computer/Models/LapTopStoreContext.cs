@@ -30,8 +30,7 @@ namespace LapTopStore_Computer.Models
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        public virtual DbSet<Payment> Payments { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductAttribute> ProductAttributes { get; set; } = null!;
         public virtual DbSet<Review> Reviews { get; set; } = null!;

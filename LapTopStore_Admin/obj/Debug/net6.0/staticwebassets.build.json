@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EUNKkmJoWyalVhmJWH/la5IUucd+SshDOYD+pHTKrAY=",
+  "Hash": "8ECYLN/zUl6jj52j65FGQbi7Y/1pmpR3yAjO9/RtzYI=",
   "Source": "LapTopStore_Admin",
   "BasePath": "_content/LapTopStore_Admin",
   "Mode": "Default",
@@ -13326,6 +13326,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "F:\\code C#\\Visual code C#\\LapTopStore\\LapTopStore_Admin\\wwwroot\\js\\js.cookie.js",
+      "SourceId": "LapTopStore_Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\code C#\\Visual code C#\\LapTopStore\\LapTopStore_Admin\\wwwroot\\",
+      "BasePath": "_content/LapTopStore_Admin",
+      "RelativePath": "js/js.cookie.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\js.cookie.js"
     },
     {
       "Identity": "F:\\code C#\\Visual code C#\\LapTopStore\\LapTopStore_Admin\\wwwroot\\js\\site.js",

@@ -14,13 +14,15 @@ namespace LapTopStore_Computer.UnitOfWork
     {
         public ICustomerRepository _customerRepository { get; set; }
         public IProductRepository _productRepository { get; set; }
+        public IOrderRepository _orderRepository { get; set; }
         private readonly LapTopStoreContext _context;
 
-        public StoreUnitOfWork(ICustomerRepository customerRepository, LapTopStoreContext context, IProductRepository productRepository)
+        public StoreUnitOfWork(ICustomerRepository customerRepository, LapTopStoreContext context, IProductRepository productRepository, IOrderRepository orderRepository)
         {
             _customerRepository = customerRepository;
             _context = context;
             _productRepository = productRepository;
+            _orderRepository = orderRepository;
         }
 
         public void Dispose()

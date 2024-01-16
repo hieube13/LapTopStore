@@ -1,0 +1,127 @@
+﻿
+@model LapTopStore_Admin.Models.Order.OrderAndDetails
+@{
+    float TotalBuy = 0;
+    @foreach (var item in Model.listDetail)
+    {
+        TotalBuy += item.ProductPrice * item.Quantity;
+    }
+
+    float vat = (float)Math.Floor(TotalBuy * 0.1f);
+}
+<!-- Content Wrapper START -->
+<div class="main-content">
+    <div class="page-header">
+        <h2 class="header-title">Hoá đơn</h2>
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                <a class="breadcrumb-item" href="#">Pages</a>
+                <span class="breadcrumb-item active">Invoice</span>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="invoice" class="p-h-30">
+                    <div class="m-t-15 lh-2">
+                        <div class="inline-block">
+                            <img class="img-fluid" src="assets/images/logo/logo.png" alt="">
+                            <address class="p-l-10">
+                                <span class="font-weight-semibold text-dark">LapTopStore</span><br>
+                                <span class="font-weight-semibold text-dark">Địa chỉ: Số 22, ngõ 139, đường Phạm Văn Đồng , quận Cầu Giấy , Hà Nội</span><br>
+                                <span class="font-weight-semibold text-dark">Email: laptopstore@gmail.com</span><br>
+                                <span class="font-weight-semibold text-dark">Số điện thoại: 123456789</span><br>
+                            </address>
+                        </div>
+                        <div class="float-right">
+                            <h2>Hoá đơn</h2>
+                        </div>
+                    </div>
+                    <div class="row m-t-20 lh-2">
+                        <div class="col-sm-9">
+                            <h3 class="p-l-10 m-t-10">Invoice To:</h3>
+                            <address class="p-l-10">
+                                <span class="font-weight-semibold text-dark">Khách hàng: @Model.CustomerUserName</span><br>
+                                <span class="font-weight-semibold text-dark">Địa chỉ : @Model.Address, @Model.Ward, @Model.District, @Model.Province</span><br>
+                                <span class="font-weight-semibold text-dark">Email: @Model.Email</span><br>
+                                <span class="font-weight-semibold text-dark">Số điện thoại: <span>@Model.Phone</span></span><br>
+                            </address>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="m-t-80">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark">Invoice No: @Model.OrderId</span></div>
+                                <div class=""></div>
+                            </div>
+                            <div class="text-dark text-uppercase d-inline-block">
+                                <span class="font-weight-semibold text-dark">Date: @Model.OrderDate</span>
+                            </div>
+                            <div class="float-right"></div>
+                        </div>
+                    </div>
+                    <div class="m-t-20">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Items</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int i = 1;}
+                                    @foreach (var item in Model.listDetail)
+                                    {
+                                        <tr>
+                                            <th>@(i ++)</th>
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@string.Format("{0:N2} VNĐ", item.ProductPrice)</td>
+                                            <td>@string.Format("{0:N2} VNĐ", (item.ProductPrice * item.Quantity))</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row m-t-30 lh-1-8">
+                            <div class="col-sm-12">
+                                <div class="float-right text-right">
+                                    <p>Sub - Total amount: @string.Format("{0:N2} VNĐ", TotalBuy)</p>
+                                    <p>vat (10%) :  @string.Format("{0:N2} VNĐ", vat)</p>
+                                    <hr>
+                                    <h3><span class="font-weight-semibold text-dark">Total :</span> @string.Format("{0:N2} VNĐ", TotalBuy - vat)</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-30 lh-2">
+                            <div class="col-sm-12">
+                                <div class="border-bottom p-v-20">
+                                    <p class="text-opacity"><small>In exceptional circumstances, Financial Services can provide an urgent manually processed special cheque. Note, however, that urgent special cheques should be requested only on an emergency basis as manually produced cheques involve duplication of effort and considerable staff resources. Requests need to be supported by a letter explaining the circumstances to justify the special cheque payment.</small></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-v-20">
+                            <div class="col-sm-6">
+                                <img class="img-fluid text-opacity m-t-5" width="100" src="assets/images/logo/logo.png" alt="">
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <small><span class="font-weight-semibold text-dark">Phone:</span> (123) 456-7890</small>
+                                <br>
+                                <small>support@themenate.com</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+   
+

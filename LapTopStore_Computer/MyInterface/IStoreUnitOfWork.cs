@@ -12,6 +12,7 @@ namespace LapTopStore_Computer.Interface
     {
         ICustomerRepository _customerRepository { get; }
         IProductRepository _productRepository { get; }
+        IOrderRepository _orderRepository { get; }
 
         int SaveChanges();
     }

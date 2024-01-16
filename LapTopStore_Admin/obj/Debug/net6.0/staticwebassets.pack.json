@@ -3113,6 +3113,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "F:\\code C#\\Visual code C#\\LapTopStore\\LapTopStore_Admin\\wwwroot\\js\\js.cookie.js",
+      "PackagePath": "staticwebassets\\js\\js.cookie.js"
+    },
+    {
       "Id": "F:\\code C#\\Visual code C#\\LapTopStore\\LapTopStore_Admin\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

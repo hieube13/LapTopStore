@@ -21,6 +21,16 @@ namespace LapTopStore_Computer.Repository
         {
             try
             {
+                //if(_context.Customers.Any(x => x.CustomerUserName== requestData.CustomerUserName))
+                //{
+                //    return -2;
+                //}
+
+                //if (_context.Customers.Any(x => x.CustomerEmail == requestData.CustomerEmail))
+                //{
+                //    return -2;
+                //}
+
                 var newCustomer = new Customer() {
                     CustomerUserName = requestData.CustomerUserName,
                     CustomerFullName = requestData.CustomerFullName,

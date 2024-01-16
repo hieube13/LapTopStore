@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -130,34 +131,64 @@ namespace LapTopStore_Client.Models.VNPAY
 
             return hash.ToString();
         }
-        public static string GetIpAddress(HttpContext httpContext)
+        //public static string GetIpAddress(HttpContext httpContext)
+        //{
+        //    string ipAddress;
+        //    try
+        //    {
+        //        ipAddress = httpContext.Request.Headers["HTTP_X_FORWARDED_FOR"].FirstOrDefault();
+
+        //        if (string.IsNullOrEmpty(ipAddress) || (ipAddress.ToLower() == "unknown") || ipAddress.Length > 45)
+        //            ipAddress = httpContext.Connection.RemoteIpAddress.ToString();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ipAddress = "Invalid IP:" + ex.Message;
+        //    }
+
+        //    return ipAddress;
+        //}
+
+        public static string GetIpAddressTest(HttpContext context)
         {
-            string ipAddress;
+            var ipAddress = string.Empty;
             try
             {
-                ipAddress = httpContext.Request.Headers["HTTP_X_FORWARDED_FOR"].FirstOrDefault();
+                var remoteIpAddress = context.Connection.RemoteIpAddress;
 
-                if (string.IsNullOrEmpty(ipAddress) || (ipAddress.ToLower() == "unknown") || ipAddress.Length > 45)
-                    ipAddress = httpContext.Connection.RemoteIpAddress.ToString();
+                if (remoteIpAddress != null)
+                {
+                    if (remoteIpAddress.AddressFamily == AddressFamily.InterNetworkV6)
+                    {
+                        remoteIpAddress = Dns.GetHostEntry(remoteIpAddress).AddressList
+                            .FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
+                    }
+
+                    if (remoteIpAddress != null) ipAddress = remoteIpAddress.ToString();
+
+                    return ipAddress;
+                }
             }
             catch (Exception ex)
             {
-                ipAddress = "Invalid IP:" + ex.Message;
+                return "Invalid IP:" + ex.Message;
             }
 
-            return ipAddress;
+            return "127.0.0.1";
         }
     }
 
-    public class VnPayCompare : IComparer<string>
+}
+
+public class VnPayCompare : IComparer<string>
+{
+    public int Compare(string x, string y)
     {
-        public int Compare(string x, string y)
-        {
-            if (x == y) return 0;
-            if (x == null) return -1;
-            if (y == null) return 1;
-            var vnpCompare = CompareInfo.GetCompareInfo("en-US");
-            return vnpCompare.Compare(x, y, CompareOptions.Ordinal);
-        }
+        if (x == y) return 0;
+        if (x == null) return -1;
+        if (y == null) return 1;
+        var vnpCompare = CompareInfo.GetCompareInfo("en-US");
+        return vnpCompare.Compare(x, y, CompareOptions.Ordinal);
     }
 }
+

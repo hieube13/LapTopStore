@@ -1,0 +1,324 @@
+﻿@model PagedList.Core.IPagedList<OrderViewModel>
+@using LapTopStore_Admin.Data;
+@using LapTopStore_Admin.Models.Order;
+@using PagedList.Core.Mvc
+@{
+    var currentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Quản lí đơn hàng" + currentPage;
+}
+
+<!-- Content Wrapper START -->
+<div class="main-content" id="filterindex">
+    <div class="page-header">
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+                <a class="breadcrumb-item asp-controller="Products" asp-action="Index">Danh sách đơn hàng</a>
+                @*<a asp-area="Admin" asp-controller="Products" asp-action="Index" class="breadcrumb-item" href="#">Danh sách tài khoản</a>*@
+                <span class="breadcrumb-item active">Quản lí sản phẩm : page @currentPage</span>
+            </nav>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-b-30">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-affix m-v-10">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-md-flex">
+                                <div class="input-affix m-v-10">
+                                    <select class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;" asp-items="ViewBag.Danhmuc">
+                                        <option selected>Chọn danh mục</option>
+                                        <option value="0">Chọn tất cả</option> 
+                                    </select>
+                                </div>
+                                <button id="filterButton" class="btn btn-primary m-l-10">Bộ lọc</button>
+                            </div>
+                        </div>
+
+                        <div id="filterOverlay" class="filter-overlay">
+                            <div class="filter-popup">
+                                <button id="closeFilter" class="close-filter-btn">&times;</button>
+
+                                <div class="filter-section">
+                                    <h4 class="filter-header">Lọc theo ngày</h4>
+                                    <div class="date-filter-row" style="align-items: baseline;">
+                                        <div class="date-filter-col">
+                                            <label for="startDate">Từ ngày:</label>
+                                            <input type="date" id="startDate" name="startDate">
+                                        </div>
+                                        <div class="date-filter-col">
+                                            <label for="endDate">Đến ngày:</label>
+                                            <input type="date" id="endDate" name="endDate">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-section">
+                                    <h4 class="filter-header">Lọc theo trạng thái đơn hàng</h4>
+                                    <div class="status-filter-row">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="status" value="1" id="status1">
+                                            <label class="form-check-label" for="status1">Chưa thanh toán</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="status" value="2" id="status2">
+                                            <label class="form-check-label" for="status2">Đã thanh toán</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="status" value="3" id="status3">
+                                            <label class="form-check-label" for="status3">Đã giao hàng</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="status" value="4" id="status4">
+                                            <label class="form-check-label" for="status4">Huỷ đơn</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-section" id="paymentFilterSection">
+                                    <h4 class="filter-header">Hình thức thanh toán</h4>
+                                    <div class="payment-filter-row">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment" value="1" id="payment1">
+                                            <label class="form-check-label" for="payment1">Tiền mặt</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment" value="2" id="payment2">
+                                            <label class="form-check-label" for="payment2">Chuyển khoản</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-section" id="transactionFilterSection">
+                                    <h4 class="filter-header">Giao dịch bằng</h4>
+                                    <div class="transaction-filter-row">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="transaction" value="VNPAYQR" id="transactionVNPAYQR">
+                                            <label class="form-check-label" for="transactionVNPAYQR">Cổng VNPAYQR</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="transaction" value="NCB" id="transactionNCB">
+                                            <label class="form-check-label" for="transactionNCB">NCB</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="transaction" value="Viettinbank" id="transactionViettinbank">
+                                            <label class="form-check-label" for="transactionViettinbank">Viettinbank</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="transaction" value="Vietcombank" id="transactionVietcombank">
+                                            <label class="form-check-label" for="transactionVietcombank">Vietcombank</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <a class="btn btn-primary" id="applyFilter" asp-controller="Order" asp-action="FilterIndex">Áp dụng</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover e-commerce-table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày tạo</th>
+                            <th>Khách hàng</th>
+                            <th>Trạng thái đơn hàng</th>
+                            <th>Hình thức thanh toán</th>
+                            <th>Giao hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchProducts">
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.OrderId</td>
+                                    <td>@item.OrderDate</td>
+                                    <td>@item.CustomerUserName</td>
+                                            
+                                    @if(item.Status == 1){
+                                        <td>Chưa thanh toán</td>
+                                    }
+                                    else if (item.Status == 2)
+                                    {
+                                        <td>Đã thanh toán</td>
+                                    }
+                                    <td>@item.PaymentTypeVN</td>
+                                    <td>Đang giao hàng</td>
+                                    @*<td>@item.TotalPrice.ToString("#, ###0") VND</td>*@
+                                    <td>@Convert.ToDouble(item.TotalPrice).ToString("#,###0") VND</td>
+
+                                    <td>
+                                        <a class="btn btn-primary btn-tone m-r-5" asp-are="Admin" asp-controller="Order" asp-action="Detail" asp-route-id="@item.OrderId">View</a>
+                                        <a class="btn btn-secondary btn-tone m-r-5" asp-are="Admin" asp-controller="Order" asp-action="Edit" asp-route-id="@item.OrderId">Edit</a>
+                                        <a class="btn btn-success btn-tone m-r-5" asp-are="Admin" asp-controller="Order" asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                                    </td>
+
+                                 </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <div aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <pager class="pager-container" list="@Model" asp-controller="Order" asp-action="Index" asp-route-CatID="@ViewBag.CurrentCatID"></pager>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+<style>
+    .filter-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Mờ màn hình cũ */
+        z-index: 9999; /* Đặt z-index lớn hơn so với màn hình chứa button "Bộ lọc" */
+    }
+
+    .filter-popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 10000; /* Đặt z-index lớn hơn so với màn hình chứa button "Bộ lọc" */
+    }
+
+    .close-filter-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .date-filter-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline; /* Căn cơ sở trên đường chữ */
+    }
+
+    .date-filter-col {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the filter button and overlay elements
+        const filterButton = document.getElementById('filterButton');
+        if (!filterButton) console.error('Không tìm thấy phần tử với ID filterButton');
+        const filterOverlay = document.getElementById('filterOverlay');
+        const applyFilterButton = document.getElementById('applyFilter');
+        const closeFilterButton = document.getElementById('closeFilter');
+        
+        // Add click event listener to the filter button
+        filterButton.addEventListener('click', function() {
+            filterOverlay.style.display = 'block';
+        });
+
+        // Add click event listener to the close filter button
+        closeFilterButton.addEventListener('click', function() {
+            // Hide the filter overlay
+            filterOverlay.style.display = 'none';
+        });
+
+        // Add click event listener to the apply filter button
+        applyFilterButton.addEventListener('click', function() {
+
+            RemoveCookie('FilterOrder');
+
+            const startDateValue = document.getElementById('startDate').value;
+            const endDateValue = document.getElementById('endDate').value;
+            const selectedStatusInput = document.querySelector('input[name="status"]:checked');
+            const selectedPaymentInput = document.querySelector('input[name="payment"]:checked');
+            const selectedTransactionInput = document.querySelector('input[name="transaction"]:checked');
+
+            // Kiểm tra xem ít nhất một bộ lọc đã được chọn hay không
+            if (startDateValue || endDateValue || selectedStatusInput || selectedPaymentInput || selectedTransactionInput) {
+                const selectedStatus = selectedStatusInput ? selectedStatusInput.value : '';
+                const selectedPayment = selectedPaymentInput ? selectedPaymentInput.value : '';
+                const selectedTransaction = selectedTransactionInput ? selectedTransactionInput.value : '';
+
+                var filterArg = {
+                    StartDate: startDateValue,
+                    EndDate: endDateValue,
+                    Status: selectedStatus,
+                    PaymentType: selectedPayment,
+                    PaymentTypeVN: selectedTransaction
+                }
+
+                SetCookie('FilterOrder', filterArg);
+
+                // Ẩn overlay sau khi áp dụng bộ lọc
+                filterOverlay.style.display = 'none';
+            } else {
+                // Xử lý khi không chọn bộ lọc
+                console.log("Không có bộ lọc nào được chọn");
+            }
+        });
+
+        function handleFilterData(startDate, endDate, status, payment, transaction) {
+            // Thực hiện xử lý dữ liệu ở đây, ví dụ gửi ajax request
+
+            var param = {
+                StartDate: startDate,
+                EndDate: endDate,
+                Status: status,
+                PaymentType: payment,
+                paymentTypeVN: transaction
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "/Order/FilterIndex",
+                data: param,
+                dataType: "html",
+                success: function (data) {
+                    $("#filterindex").html("");
+                    $("#filterindex").html(data);
+
+                },
+                error: function (error) {
+                    console.error("Lỗi khi gửi AJAX request:", error);
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+

@@ -13,7 +13,6 @@
 
     <!-- Core css -->
     <link href="~/assets/css/app.min.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -195,7 +194,7 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" href="javascript:void(0);">
+                            <a class="dropdown-toggle" asp-controller="Order" asp-action="Index">
                                 <span class="icon-holder">
                                     <i class="anticon anticon-appstore"></i>
                                 </span>
@@ -542,6 +541,7 @@
 
     <!-- Core JS -->
     <script src="~/assets/js/app.min.js"></script>
+    <script src="~/js/js.cookie.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

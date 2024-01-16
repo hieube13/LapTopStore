@@ -1,10 +1,12 @@
 using AspNetCoreHero.ToastNotification;
 using LapTopStore_Client.Models.VNPAY;
 using LapTopStore_Computer.Interface;
+using LapTopStore_Computer.Models;
 using LapTopStore_Computer.MyInterface;
 using LapTopStore_Computer.Repository;
 using LapTopStore_Computer.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,13 @@ builder.Services.AddNotyf(config => {
     config.IsDismissable = true; 
     config.Position = NotyfPosition.TopRight; 
 });
+
+builder.Services.AddDbContext<LapTopStoreContext>(options =>
+{
+    var connectStr = builder.Configuration.GetConnectionString("LapTopStore");
+    options.UseSqlServer(connectStr);
+});
+
 
 builder.Services.AddAuthentication(options =>
 {

@@ -75,7 +75,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    <form action="javascript:void(0)">
+                    <div action="javascript:void(0)" >
                         <div class="checkbox-form">
                             <h3>Billing Details</h3>
                             <div class="row">
@@ -107,25 +107,34 @@
                                 <div class="col-md-12">
                                     <div class="checkout-form-list">
                                         <label>Tên người nhận hàng</label>
-                                        <input placeholder="" type="text">
+                                        <input id="recipientName" placeholder="" type="text">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="checkout-form-list">
                                         <label>Địa chỉ cụ thể<span class="required">*</span></label>
-                                        <input placeholder="số nhà , ngõ , đường .." type="text">
+                                        <input id="address" placeholder="số nhà , ngõ , đường .." type="text">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="checkout-form-list">
                                         <label>Email Address <span class="required">*</span></label>
-                                        <input placeholder="" type="email">
+                                        <input id="email" placeholder="" type="email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="checkout-form-list">
                                         <label>Phone <span class="required">*</span></label>
-                                        <input type="text">
+                                        <input id="phone" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="checkout-form-list">
+                                        <label>Hình thức thanh toán</label>
+                                        <select class="form-control" name="TypePayment" id="drTypePayment">
+                                            <option value="1" selected>Thanh toán tiền mặt</option>
+                                            <option value="2">Chuyển khoản</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -143,7 +152,7 @@
                             </div>
                             
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="col-lg-6 col-12">
                     <div class="your-order">
@@ -173,42 +182,22 @@
                                     </tr>
                                     <tr class="order-total">
                                         <th>Order Total</th>
-                                        <td><strong><span class="amount">@formatTotal</span></strong></td>
+                                        <td><strong><div class="amount" id="orderTotal">@formatTotal</div></strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
-                        <div class="payment-method">
-                            <div class="payment-accordion">
-                                <div>Phương thức thanh toán</div>
-                                <div id="payment-container">
-                                    <div class="payment-method" id="payment-1">
-                                        <h5 class="panel-title">
-                                            <a href="javascript:void(0)" class="payment-option" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
-                                               Tiền mặt
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div class="payment-method" id="payment-2">
-                                        <h5 class="panel-title">
-                                            <a href="javascript:void(0)" class="payment-option collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
-                                                Thẻ ngân hàng
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div class="payment-method" id="payment-3">
-                                        <h5 class="panel-title">
-                                            <a href="javascript:void(0)" class="payment-option collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
-                                                MoMo
-                                            </a>
-                                        </h5>
-                                    </div>
-                                </div>
 
-                                <div class="order-button-payment">
-                                    <input value="Place order" type="submit">
-                                </div>
-                            </div>
+                        <button type="button" id="thanht">Thanh toán</button>
+                        
+                        <div class="form-group" id="load_form_payment" style="display:none;">
+                            <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+                            <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+                            <label><input type="radio" name="TypePaymentVN" value="0" checked/> Cổng thanh toán VNPAYQR </label>
+                            <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                            <label><input type="radio" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
+                            <label><input type="radio" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+                            <label><input type="radio" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
                         </div>
                     </div>
                 </div>
@@ -218,86 +207,130 @@
 </main>
 <!-- Main Content Area End Here -->
 
-<style>
-    #payment-container {
-            display: flex;
-            justify-content: space-around; /* Căn phương thức thanh toán theo chiều ngang */
-            align-items: center; /* Căn giữa theo chiều dọc */
-            background-color: #f0f0f0; /* Màu nền của container */
-            padding: 10px; /* Khoảng cách giữa các phương thức thanh toán */
-            border-radius: 10px; /* Bo tròn góc của container */
-    }
 
-    .payment-method {
-        text-align: center; /* Căn giữa nội dung theo chiều ngang */
-        background-color: #ffffff; /* Màu nền của ô hình chữ nhật */
-        padding: 15px; /* Kích thước của ô hình chữ nhật */
-        border: 1px solid #ccc; /* Viền ô hình chữ nhật */
-        border-radius: 8px; /* Bo tròn góc của ô hình chữ nhật */
-        margin: 0 5px; /* Khoảng cách giữa các ô hình chữ nhật */
-    }
-
-    .payment-option {
-        text-decoration: none; /* Loại bỏ gạch chân mặc định cho liên kết */
-        color: #333; /* Màu chữ của liên kết */
-    }
-
-    .payment-option.active {
-        font-weight: bold; /* Hiển thị đậm khi được chọn */
-        color: #007bff; /* Màu chữ khi được chọn */
-    }
-
-</style>
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    var citis = document.getElementById("city");
-    var districts = document.getElementById("district");
-    var wards = document.getElementById("ward");
-    var Parameter = {
-      url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
-      method: "GET", 
-      responseType: "application/json", 
-    };
-    var promise = axios(Parameter);
-    promise.then(function (result) {
-      renderCity(result.data);
-    });
-
-    function renderCity(data) {
-      for (const x of data) {
-        citis.options[citis.options.length] = new Option(x.Name, x.Id);
-      }
-      citis.onchange = function () {
-        district.length = 1;
-        ward.length = 1;
-        if(this.value != ""){
-          const result = data.filter(n => n.Id === this.value);
-
-          for (const k of result[0].Districts) {
-            district.options[district.options.length] = new Option(k.Name, k.Id);
-          }
-        }
-      };
-      district.onchange = function () {
-        ward.length = 1;
-        const dataCity = data.filter((n) => n.Id === citis.value);
-        if (this.value != "") {
-          const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
-
-          for (const w of dataWards) {
-            wards.options[wards.options.length] = new Option(w.Name, w.Id);
-          }
-        }
-      };
-    }
+<script> 
 
     $(document).ready(function() {
+
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var Parameter = {
+          url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+          method: "GET", 
+          responseType: "application/json", 
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+          renderCity(result.data);
+        });
+
+        function renderCity(data) {
+          for (const x of data) {
+            citis.options[citis.options.length] = new Option(x.Name, x.Name);
+          }
+          citis.onchange = function () {
+            district.length = 1;
+            ward.length = 1;
+            if(this.value != ""){
+              const result = data.filter(n => n.Name === this.value);
+
+              for (const k of result[0].Districts) {
+                district.options[district.options.length] = new Option(k.Name, k.Name);
+              }
+            }
+          };
+          district.onchange = function () {
+            ward.length = 1;
+            const dataCity = data.filter((n) => n.Name === citis.value);
+            if (this.value != "") {
+              const dataWards = dataCity[0].Districts.filter(n => n.Name === this.value)[0].Wards;
+
+              for (const w of dataWards) {
+                wards.options[wards.options.length] = new Option(w.Name, w.Name);
+              }
+            }
+          };
+        }
+
+
         $(".payment-option").click(function() {
             $(".payment-option").removeClass("active");
             $(this).addClass("active");
         });
+
+        $('body').on('change', '#drTypePayment', function () {
+            var type = $(this).val();
+            $('#load_form_payment').hide();
+            if (type == "2") {
+                $('#load_form_payment').show();
+            }
+        });
+
+
+        function UpdateOrder()
+        {
+            var address = $("#address").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val();
+            var cityValue = $("#city").val();
+            var districtValue = $("#district").val();
+            var wardValue = $("#ward").val();
+            var customerID = "10";
+            var status = "1";
+            var orderTotalElement = $("#orderTotal").text();
+            var cleanedString = orderTotalElement.replace("₫", "").replace(/\./g, "").trim();
+            var myShoppingCartCookie = GetCookie("MyShoppingCart");
+            var paymentType = $("#drTypePayment").val();;
+            var paymentTypeVN = $("input[name='TypePaymentVN']:checked").val();
+
+            var param = {
+                Address: address,
+                Email: email,
+                Phone: phone,
+                Province: cityValue,
+                District: districtValue,
+                Ward: wardValue,
+                CustomerID: customerID,
+                PaymentType: paymentType,
+                PaymentTypeVN: paymentTypeVN,
+                Status: status,
+                TotalPrice: cleanedString,
+                listProducts: myShoppingCartCookie
+            };
+
+
+            $.ajax({
+                type : 'POST',
+                url : "/ShoppingCart/CheckoutPost",
+                data : param,
+                dataType : "json",
+                success : function(data) {
+                    if(data.responseCode < 0) 
+                    {
+                        alert(data.messenger);
+                    }
+                    else 
+                    {
+                        alert(data.messenger);
+                        window.location.href = data.messenger;
+                    }
+                },
+                error: function (data) {
+                    console.log("error:" + JSON.stringify(data));
+                }
+            });
+        }
+
+       
+        $("#thanht").click(function () {
+            UpdateOrder();
+        });
+
     });
+
+
 </script>

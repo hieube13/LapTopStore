@@ -279,3 +279,5 @@ F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\bin\Debug\net6.0\runtimes\
 F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
 F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\obj\Debug\net6.0\LapTopStore_API.RazorAssemblyInfo.cache
+F:\code C#\Visual code C#\LapTopStore\LapTopStore_API\obj\Debug\net6.0\LapTopStore_API.RazorAssemblyInfo.cs

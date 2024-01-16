@@ -15,3 +15,11 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = F:\code C#\Visual code C#\LapTopStore\LapTopStore_API
 build_property._RazorSourceGeneratorDebug = 
+
+[F:/code C\#/Visual code C\#/LapTopStore/LapTopStore_API/Template/send1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = VGVtcGxhdGVcc2VuZDEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/code C\#/Visual code C\#/LapTopStore/LapTopStore_API/Template/send2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = VGVtcGxhdGVcc2VuZDIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

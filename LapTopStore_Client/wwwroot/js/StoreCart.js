@@ -5,18 +5,21 @@
     var productName = $(e).data('productname');
     var productDescription = $(e).data('productdescription');
     var productPrice = $(e).data('productprice');
+    var productDiscount = $(e).data('productdiscount');
     var productCreated = $(e).data('productcreated');
     var productInStock = $(e).data('productinstock');
-    var homeFlag = $(e).data('homefla');
+    var homeFlag = $(e).data('homeflag');
     var bestSeller = $(e).data('bestseller');
     var prImage1 = $(e).data('primage1');
     var categoryName = $(e).data('categoryname');
 
     var item = {
+        OrderID : 0,
         ProductId: productId,
         ProductName: productName,
         ProductDescription: productDescription,
         ProductPrice: productPrice,
+        ProductDiscount: productDiscount,
         ProductCreated: productCreated,
         ProductInStock: productInStock,
         HomeFlag: homeFlag,
@@ -46,6 +49,7 @@ RemoveOneItemFromCart = function (e) {
     var productName = $(e).data('productname');
     var productDescription = $(e).data('productdescription');
     var productPrice = $(e).data('productprice');
+    var productDiscount = $(e).data('productdiscount');
     var productCreated = $(e).data('productcreated');
     var productInStock = $(e).data('productinstock');
     var homeFlag = $(e).data('homefla');
@@ -54,10 +58,12 @@ RemoveOneItemFromCart = function (e) {
     var categoryName = $(e).data('categoryname');
 
     var item = {
+        OrderID: 0,
         ProductId: productId,
         ProductName: productName,
         ProductDescription: productDescription,
         ProductPrice: productPrice,
+        ProductDiscount: productDiscount,
         ProductCreated: productCreated,
         ProductInStock: productInStock,
         HomeFlag: homeFlag,
@@ -84,10 +90,12 @@ RemoveItemFromCart = function (e) {
     var result = confirm("Bạn có chắc chắn muốn xóa sản phẩm này ?");
     if (result) {
         var item = {
+            OrderID:0,
             ProductId: productId,
             ProductName: productName,
             ProductDescription: productDescription,
             ProductPrice: productPrice,
+            ProductDiscount: productDiscount,
             ProductCreated: productCreated,
             ProductInStock: productInStock,
             HomeFlag: homeFlag,

@@ -26,6 +26,19 @@ namespace LapTopStore_Common
             return response.Content;
         }
 
+        public static string WebPost1(string url, string baseUrl)
+        {
+            var options = new RestClientOptions(url)
+            {
+                MaxTimeout = -1,
+            };
+            var client = new RestClient(options);
+            var request = new RestRequest(baseUrl, Method.Post);
+            RestResponse response = client.Execute(request);
+
+            return response.Content;
+        }
+
         public static string WebGet(string url, string baseUrl)
         {
             var options = new RestClientOptions(url)

@@ -15,7 +15,7 @@ namespace LapTopStore_Computer.Models
         [Key]
         public int OrderId { get; set; }
         public int? CustomerId { get; set; }
-        public string? OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public DateTime? RequiredDate { get; set; }
         public DateTime? ShippedDate { get; set; }
         public string? Phone { get; set; }
@@ -26,11 +26,11 @@ namespace LapTopStore_Computer.Models
         public string? Address { get; set; }
         public double? TotalPrice { get; set; }
         public int? Status { get; set; }
-        public int? PaymentId { get; set; }
+        public string? PaymentType { get; set; }
+        public string? PaymentTypeVN { get; set; }
         public DateTime? PaymentDate { get; set; }
 
         public virtual Customer? Customer { get; set; }
-        public virtual Payment? Payment { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
