@@ -7,6 +7,7 @@ using LapTopStore_Computer.MyInterface;
 using LapTopStore_Computer.Repository;
 using LapTopStore_Computer.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,7 @@ builder.Services.AddTransient<IApplicationDbConnection, ApplicationDbConnection>
 var mailSetting = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailSetting);
 builder.Services.AddTransient<IEmailSender, SendMailService>();
+builder.Services.AddTransient<ICheckToken, CheckToken>();
 
 var app = builder.Build();
 
@@ -103,6 +105,14 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.SameAsRequest,
+    MinimumSameSitePolicy = SameSiteMode.None
+    //SameSite = SameSiteMode.None,
+});
 
 var httpClient = new HttpClient();
 httpClient.Timeout = TimeSpan.FromMinutes(5);

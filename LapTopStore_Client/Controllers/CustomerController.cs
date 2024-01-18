@@ -1,9 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using LapTopStore_Client.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace LapTopStore_Client.Controllers
 {
@@ -83,6 +86,21 @@ namespace LapTopStore_Client.Controllers
             {
                 return Json(new { responseCode = -1, messenger = "đăng nhập thất bại" });
             }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, requestData.Email),
+                new Claim(ClaimTypes.Name, result.CustomerUsername)
+            };
+
+            // Tạo ClaimsIdentity từ danh sách claims
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Tạo ClaimsPrincipal từ ClaimsIdentity
+            var principal = new ClaimsPrincipal(identity);
+
+            // Đăng nhập (lưu thông tin vào HttpContext.User)
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return Json(result);
         }

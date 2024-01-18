@@ -24,12 +24,14 @@ namespace LapTopStore_API.Controllers
         public IConfiguration _configuration { get; set; }
         public IWebHostEnvironment _webHost { get; set; }
         public IEmailSender _senEmail { get; set; }
-        public ShoppingCartController(IStoreUnitOfWork unitOfWork, IConfiguration configuration, IWebHostEnvironment webHost, IEmailSender sendEmai) 
+        public ICheckToken _checkToken { get; set; }
+        public ShoppingCartController(IStoreUnitOfWork unitOfWork, IConfiguration configuration, IWebHostEnvironment webHost, IEmailSender sendEmai, ICheckToken checkToken) 
         { 
             _unitOfWork= unitOfWork;
             _configuration= configuration;
             _webHost= webHost;
             _senEmail= sendEmai;
+            _checkToken= checkToken;
         }
 
         [HttpPost("GetOrderByID")]
@@ -47,6 +49,16 @@ namespace LapTopStore_API.Controllers
             {
                 returnData.ResponseCode = -1;
                 returnData.Messenger = "SAIIIII";
+                return Ok(returnData);
+            }
+
+            var resultCheck = _checkToken.IsAccessTokenValid(requestData.AccessToken);
+
+            if (resultCheck == false)
+            {
+                returnData.ResponseCode = 13;
+                returnData.Messenger = "";
+
                 return Ok(returnData);
             }
 

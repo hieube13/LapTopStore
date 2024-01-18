@@ -93,8 +93,8 @@
                     //sessionStorage.setItem("Address", data.address);
                     //window.location.href = "/Home/Index";
                     alert(data.messenger + " " + data.accesstoken);
-                    setCookie("LapTopJwtToken", data.accesstoken, 1);
-                    setCookie("LapTopRefreshToken", data.refreshToken, 1);
+                    SetCookie("LapTopJwtToken", data.accessToken, 1);
+                    SetCookie("LapTopRefreshToken", data.refreshToken, 1);
                     window.location.href = "/Home/Index"
                 }
             },
@@ -108,12 +108,12 @@
             Login();
     });
 
-    function setCookie(cname, cvalue, exdays) {
-        const d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        let expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
+    //function setCookie(cname, cvalue, exdays) {
+    //    const d = new Date();
+    //    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    //    let expires = "expires="+ d.toUTCString();
+    //    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    //}
 
 
 </script>

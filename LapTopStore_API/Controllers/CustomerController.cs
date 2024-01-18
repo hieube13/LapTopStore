@@ -121,6 +121,7 @@ namespace LapTopStore_API.Controllers
                 returnData.Messenger = "Đăng nhập thành công";
                 returnData.Accesstoken = token; 
                 returnData.RefreshToken = refreshToken;
+                returnData.CustomerUsername = customer.CustomerUserName;
 
                 return Ok(returnData);
             }
@@ -131,9 +132,9 @@ namespace LapTopStore_API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("refresh-token")]
-        public async Task<IActionResult> RefreshToken(TokenModel tokenModel)
+        [HttpPost("RefreshToken")]
+        //[Route("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenModel tokenModel)
         {
             if (tokenModel is null)
             {
@@ -149,7 +150,19 @@ namespace LapTopStore_API.Controllers
                 return BadRequest("Invalid access token or refresh token");
             }
 
-            string username = principal.Identity.Name;
+            string username = "";
+
+            var nameIdentifierClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (nameIdentifierClaim != null)
+            {
+                username = nameIdentifierClaim.Value;
+                // Bây giờ bạn có giá trị của NameIdentifier
+            }
+            else
+            {
+                // Claim không tồn tại trong principal
+            }
 
             var user = _context.Customers.Where(x => x.CustomerUserName == username).FirstOrDefault();
 
@@ -170,13 +183,22 @@ namespace LapTopStore_API.Controllers
                 RefreshToken = newRefreshToken,
                 RefreshTokenExpiryTime = DateTime.Now.AddDays(Convert.ToInt32(expiredRefreshToken))
             });
+            _unitOfWork.SaveChanges();
             //await _userManager.UpdateAsync(user);
 
-            return new ObjectResult(new
+            //return new ObjectResult(new
+            //{
+            //    AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+            //    RefreshToken = newRefreshToken
+            //});
+
+            var result = new TokenModel()
             {
-                accessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
-                refreshToken = newRefreshToken
-            });
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+                RefreshToken = newRefreshToken
+            };
+
+            return Ok(result);
         }
 
         private static string GenerateRefreshToken()

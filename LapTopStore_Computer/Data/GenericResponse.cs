@@ -9,6 +9,6 @@ namespace LapTopStore_Computer.Data
     public class GenericResponse
     {
         public int ResponseCode { get; set; }
-        public string Messenger { get; set; }
+        public string? Messenger { get; set; }
     }
 }

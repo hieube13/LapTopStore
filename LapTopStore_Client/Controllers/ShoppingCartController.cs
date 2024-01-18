@@ -11,6 +11,7 @@ using LapTopStore_Common;
 using LapTopStore_Client.Models;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LapTopStore_Client.Controllers
 {
@@ -24,6 +25,7 @@ namespace LapTopStore_Client.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult VnpayReturn()
         {
             var returnData = new GenericResponse();
@@ -123,6 +125,7 @@ namespace LapTopStore_Client.Controllers
             return View(returnData);
         }
 
+        [Authorize]
         public IActionResult ShopCart()
         {
             var list_product = new List<CartProduct>();
@@ -140,6 +143,7 @@ namespace LapTopStore_Client.Controllers
             return View(list_product);
         }
 
+        [Authorize]
         public IActionResult Checkout()
         {
             var list_product = new List<CartProduct>();
@@ -157,6 +161,7 @@ namespace LapTopStore_Client.Controllers
             return View(list_product);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CheckoutPost(OrderViewModel requestData)
         {
@@ -165,17 +170,55 @@ namespace LapTopStore_Client.Controllers
             //var CartShop = new List<CartProduct>();
             //var cart = Request.Cookies["MyShoppingCart"] != null ? Request.Cookies["MyShoppingCart"] : string.Empty;
             //CartShop = JsonConvert.DeserializeObject<List<CartProduct>>(HttpUtility.UrlDecode(cart));
-            
+            requestData.AccessToken = Request.Cookies["LapTopJwtToken"] != null ? Request.Cookies["LapTopJwtToken"] : string.Empty;
+            requestData.RefreshToken = Request.Cookies["LapTopRefreshToken"] != null ? Request.Cookies["LapTopRefreshToken"] : string.Empty;
+
             var url = "https://localhost:7019/api";
 
             //add order
-            var baseUrl1 = "/ShoppingCart/AddOrder";
+            var baseUrl = "/ShoppingCart/AddOrder";
 
-            var jsonData1 = JsonConvert.SerializeObject(requestData);
+            var jsonData = JsonConvert.SerializeObject(requestData);
 
-            var data_from_server1 = PostmanTools.WebPost(url, baseUrl1, jsonData1);
+            var data_from_server = PostmanTools.WebPost(url, baseUrl, jsonData);
 
-            returnOrder = JsonConvert.DeserializeObject<GenericResponse>(data_from_server1);
+            returnOrder = JsonConvert.DeserializeObject<GenericResponse>(data_from_server);
+
+            if(returnOrder.ResponseCode == 13 )
+            {
+                var newToken = new TokenModel();
+                var baseUrl1 = "/Customer/RefreshToken";
+                var model = new TokenModel() { 
+                    AccessToken = requestData.AccessToken,
+                    RefreshToken = requestData.RefreshToken
+                };
+                var jsonData1 = JsonConvert.SerializeObject(model);
+                var newTokenFromServer = PostmanTools.WebPost(url, baseUrl1, jsonData1);
+
+                newToken = JsonConvert.DeserializeObject<TokenModel>(newTokenFromServer);
+
+                requestData.AccessToken = newToken.AccessToken;
+                requestData.RefreshToken = newToken.RefreshToken;
+
+                var cookieOptions = new CookieOptions
+                {
+                    // Thiết lập các thuộc tính của cookie, ví dụ như thời gian sống, đường dẫn, domain, etc.
+                    Expires = DateTime.Now.AddDays(1), // Đặt thời gian sống của cookie (ở đây là 1 ngày)
+                    HttpOnly = true, // Không cho JavaScript truy cập cookie
+                };
+
+                // Gán giá trị vào cookie
+                Response.Cookies.Append("LapTopJwtToken", requestData.AccessToken, cookieOptions);
+                Response.Cookies.Append("LapTopRefreshToken", requestData.RefreshToken, cookieOptions);
+
+                jsonData = JsonConvert.SerializeObject(requestData);
+
+                data_from_server = PostmanTools.WebPost(url, baseUrl, jsonData);
+
+                returnOrder = JsonConvert.DeserializeObject<GenericResponse>(data_from_server);
+
+                return Json(returnOrder);
+            }
             
 
             return Json(returnOrder);

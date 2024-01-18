@@ -1,4 +1,6 @@
 ﻿using LapTopStore_API.Data;
+using LapTopStore_API.MyShopAttribute;
+using LapTopStore_API.Services;
 using LapTopStore_Common;
 using LapTopStore_Computer.Data;
 using LapTopStore_Computer.Data.Product;
@@ -18,11 +20,13 @@ namespace LapTopStore_API.Controllers
     {
         private readonly IStoreUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
+        private readonly ICheckToken _checkToken;
 
-        public ProductController(IStoreUnitOfWork unitOfWork, IConfiguration config)
+        public ProductController(IStoreUnitOfWork unitOfWork, IConfiguration config, ICheckToken checkToken)
         {
             _unitOfWork = unitOfWork;
             _config = config;
+            _checkToken = checkToken;
         }
 
         [HttpPost("AdminProduct")]
@@ -189,16 +193,28 @@ namespace LapTopStore_API.Controllers
         }
 
         [HttpGet("GetProductDetailsUser")]
-        public async Task<IActionResult> GetProductDetailsUser([FromBody] int? id)
+        //[MyShopCheckToken]
+        public async Task<IActionResult> GetProductDetailsUser([FromBody] ProductDetailModel requestData)
         {
-            if (id == null)
+            if (requestData.Id == null || requestData.AccessToken == null || requestData.RefreshToken == null)
             {
                 return BadRequest();
             }
 
             var result = new ProductDetailAndRelated();
+            var resultCheck = _checkToken.IsAccessTokenValid(requestData.AccessToken);
 
-            result = await _unitOfWork._productRepository.GetProductAndRelated(id);
+            if(resultCheck == false)
+            {
+                result.ResponseCode = 13;
+                result.product = null;
+                result.listRelated = null;
+
+                return Ok(result);
+            }
+
+
+            result = await _unitOfWork._productRepository.GetProductAndRelated(requestData.Id);
 
             return Ok(result);
         }

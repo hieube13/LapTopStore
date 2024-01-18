@@ -25,6 +25,8 @@ namespace LapTopStore_Computer.Data.ShoppingCart
         public string? PaymentTypeVN { get; set; }
         public DateTime? PaymentDate { get; set; }
         public List<CartProduct> listProducts { get; set; }
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set;}
 
     }
 }

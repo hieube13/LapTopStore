@@ -1,8 +1,11 @@
 ﻿@using System.Globalization;
 @model List<LapTopStore_Client.Models.ShoppingCart.CartProduct> 
 @{
-    
-    var length = Model.Count();
+    var length = 0;
+    if(Model != null)
+    {
+        length = Model.Count();
+    }
     var totalpay = 0;
 
     for (int i = 0; i < length; i++)

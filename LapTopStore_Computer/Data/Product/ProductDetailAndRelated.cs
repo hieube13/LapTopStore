@@ -8,7 +8,8 @@ namespace LapTopStore_Computer.Data.Product
 {
     public class ProductDetailAndRelated
     {
-        public ProductDetails product { get; set; }
-        public List<ProductDetails> listRelated { get; set; }
+        public int ResponseCode { get; set; }
+        public ProductDetails? product { get; set; }
+        public List<ProductDetails>? listRelated { get; set; }
     }
 }
